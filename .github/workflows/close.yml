@@ -1,0 +1,21 @@
+name: Automatically close jobs
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+jobs:
+  close:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependency
+        run: pip install requests
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Run the scan
+        run: python close.py
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: Update closed internships
+          title: Update closed internships
+          body: Update closed internships
